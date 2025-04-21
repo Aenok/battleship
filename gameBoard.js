@@ -35,14 +35,26 @@ export class GameBoard {
         }
 
         if(hit_ship != undefined) {
+            hit_ship.addHitCoordinates(x, y);
             return hit_ship.hit();
         } else {
             if(x in this.missArr) {
-                this.missArr[x].push(y);
+                this.missArr[x].add(y);
             } else {
-                this.missArr[x] = [y];
+                let newSet = new Set();
+                newSet.add(y)
+                this.missArr[x] = newSet;
             }
             return "Attack Missed";
         }
+    }
+
+    isGameOver() {
+        let sunkArr = [];
+        for(let i = 0; i < this.shipArr.length; i++) {
+            sunkArr.push(this.shipArr[i].isSunk());
+        }
+        
+        return !sunkArr.includes(false)     // if true, false is not part of array and game is over, if false, false is part of array and the game continues
     }
 }

@@ -8,6 +8,19 @@ test('ship hit test 1', () => {
     expect(ship.hit()).toBe(1);
 })
 
+test('hit coordinates 1', () => {
+    const ship = new Ship(3, [[0,0], [0,1], [0,2]]);
+    expect(ship.addHitCoordinates(0,0)).toBe("Hit!");
+})
+
+test('hit coordinates 2', () => {
+    const ship = new Ship(3, [[0,0], [0,1], [0,2]]);
+    let newSet = new Set();
+    newSet.add(0);
+    ship._coordinatesHit[0] = newSet;
+    expect(ship.addHitCoordinates(0,0)).toBe("Coordinates already hit");
+})
+
 test('ship is sunk 1', () => {
     const ship = new Ship(5, []);
     expect(ship.isSunk()).toBeFalsy();
@@ -29,6 +42,8 @@ test('ship is sunk 3', () => {
     ship.hit();
     expect(ship.isSunk()).toBeFalsy();
 })
+
+
 
 /* --------------------- GAMEBOARD TESTING --------------------- */
 
@@ -67,4 +82,30 @@ test('attack received, ship missed 1', () => {
     let gb = new GameBoard();
     gb.initShip(3, [[0,0], [0,1], [0,2]]);
     expect(gb.receiveAttack(10, 0)).toBe("Attack Missed");
+})
+
+test('is game over 1', () => {
+    let gb = new GameBoard();
+    gb.initShip(3, [[0,0], [0,1], [0,2]]);
+    gb.initShip(3, [[1,0], [1,1], [1,2]]);
+    gb.initShip(3, [[2,0], [2,1], [2,2]]);
+    expect(gb.isGameOver()).toBeFalsy();
+})
+
+test('is game over 2', () => {
+    let gb = new GameBoard();
+    gb.initShip(3, [[0,0], [0,1], [0,2]]);
+    gb.receiveAttack(0,0);
+    gb.receiveAttack(0,1);
+    gb.receiveAttack(0,2);
+    expect(gb.isGameOver()).toBeTruthy();
+})
+
+test('is game over 3', () => {
+    let gb = new GameBoard();
+    gb.initShip(3, [[0,0], [0,1], [0,2]]);
+    gb.receiveAttack(0,0);
+    gb.receiveAttack(0,1);
+    // gb.receiveAttack(0,2);
+    expect(gb.isGameOver()).toBeFalsy();
 })
