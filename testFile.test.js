@@ -109,3 +109,6 @@ test('is game over 3', () => {
     // gb.receiveAttack(0,2);
     expect(gb.isGameOver()).toBeFalsy();
 })
+
+/* --------------------- PLAYER TESTING --------------------- */
+
