@@ -1,12 +1,13 @@
 export class Ship {
-    constructor(length, coordinates) {
+    constructor(length, coordinates, isDestroyer = false) {
         this.length = length;
         this.hits = 0;
         this.coordinates = coordinates;
+        this.isDestroyer = isDestroyer;
     }
 
     hit() {
-        this.hits++;
+        return ++this.hits;
     }
 
     isSunk() {
