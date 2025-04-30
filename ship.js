@@ -1,9 +1,9 @@
 export class Ship {
-    constructor(length, coordinates, isDestroyer = false) {
+    constructor(name, length, coordinates) {
+        this.name = name;
         this.length = length;
         this.hits = 0;
         this.coordinates = coordinates;
-        this.isDestroyer = isDestroyer;
         this._coordinatesHit = {};
     }
 
@@ -25,6 +25,7 @@ export class Ship {
     }
 
     isSunk() {
+        // console.log(`hits == ${this.hits}, length == ${this.length}`);
         if(this.hits === this.length) {
             return true;
         } else {

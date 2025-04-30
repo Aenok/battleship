@@ -6,7 +6,7 @@ export class GameBoard {
         this.missArr = {}; // object will be set up in dictionary style. Key will be an int representing the x value of a missed coordinate, value will be an array of integers, each representing the y value of a missed coordinate
     }
 
-    initShip(length, coordinates) {
+    initShip(name, length, coordinates) {
 
         if(length !== coordinates.length) {
             return "Incorrect Ship Length"
@@ -19,15 +19,20 @@ export class GameBoard {
                 }
             }
         }
-        let newShip = new Ship(length, coordinates);
+        let newShip = new Ship(name, length, coordinates);
         this.shipArr.push(newShip);
     }
 
     receiveAttack(x, y) {
+
+        if(x in this.missArr && this.missArr[x].has(y)) {
+            return -2;
+        }
+
         let hit_ship;
         for(let i = 0; i < this.shipArr.length; i++) {
             for(let j = 0; j < this.shipArr[i].coordinates.length; j++) {
-                if(this.shipArr[i].coordinates[j].includes(x) && this.shipArr[i].coordinates[j].includes(y)) {
+                if(this.shipArr[i].coordinates[j][0] == x && this.shipArr[i].coordinates[j][1] == y) {
                     hit_ship = this.shipArr[i];
                     break;
                 }
@@ -36,7 +41,7 @@ export class GameBoard {
 
         if(hit_ship != undefined) {
             hit_ship.addHitCoordinates(x, y);
-            return hit_ship.hit();
+            return [this.shipArr.indexOf(hit_ship), hit_ship];
         } else {
             if(x in this.missArr) {
                 this.missArr[x].add(y);
@@ -45,7 +50,7 @@ export class GameBoard {
                 newSet.add(y)
                 this.missArr[x] = newSet;
             }
-            return "Attack Missed";
+            return -1;
         }
     }
 

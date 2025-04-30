@@ -81,7 +81,7 @@ test('attack received, ship hit 1', () => {
 test('attack received, ship missed 1', () => {
     let gb = new GameBoard();
     gb.initShip(3, [[0,0], [0,1], [0,2]]);
-    expect(gb.receiveAttack(10, 0)).toBe("Attack Missed");
+    expect(gb.receiveAttack(10, 0)).toBe(-1);
 })
 
 test('is game over 1', () => {
@@ -109,6 +109,4 @@ test('is game over 3', () => {
     // gb.receiveAttack(0,2);
     expect(gb.isGameOver()).toBeFalsy();
 })
-
-/* --------------------- PLAYER TESTING --------------------- */
 

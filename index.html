@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship</title>
+    <script type="module" src="./scripts.js"></script>
+    <link rel="stylesheet" href="./stylesheet.css">
+</head>
+<body>
+    <div id="container">
+        <div id="wrapper">
+            <div id="your_gb" class="gb">
+                <div>Your Grid</div>
+                <div class="grid">
+                    <div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                    <div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                    <div class="bottom">
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="op_gb" class="gb">
+                <div>Your Opponents Grid</div>
+                <div class="grid">
+                    <div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                    <div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div><div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                    <div class="bottom">
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div class="right"></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="message"></div>
+    </div>
+</body>
+</html>
