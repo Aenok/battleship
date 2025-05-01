@@ -5,9 +5,7 @@ let colorArr = ['#EB7270', '#AD63C2', '#4CB6EC', '#727DC3', '#4AAAA1'];
 const p1 = new Player();
 const p2 = new Player();
 
-let startPlayer = p1;
-
-// let startPlayer = Math.floor(Math.random() * 2) == 0 ? p1 : p2;     // randomly select starter
+let startPlayer = Math.floor(Math.random() * 2)    // randomly select starter
 
 
 p1.gb.initShip("Cruiser", 5, [[5,3], [5,4], [5,5], [5,6], [5,7]]);
@@ -16,17 +14,138 @@ p1.gb.initShip("Destroyer", 3, [[2,0], [3,0], [4,0]]);
 p1.gb.initShip("Submarine", 3, [[3,5], [3,6], [3,7]]);
 p1.gb.initShip("Patrol Boat", 2, [[9,0], [9,1]]);
 
-// p2.gb.initShip("Cruiser", 5, [[5,3], [5,4], [5,5], [5,6], [5,7]]);
-// p2.gb.initShip("Battleship", 4, [[0,2], [1,2], [2,2], [3,2]]);
-// p2.gb.initShip("Destroyer", 3, [[2,0], [3,0], [4,0]]);
-// p2.gb.initShip("Submarine", 3, [[3,5], [3,6], [3,7]]);
-// p2.gb.initShip("Patrol Boat", 2, [[9,0], [9,1]]);
+compInitShip("Cruiser", 5);
+compInitShip("Battleship", 4);
+compInitShip("Destroyer", 3);
+compInitShip("Submarine", 3);
+compInitShip("Patrol Boat", 2);
 
-p2.gb.initShip("Cruiser", 5, [[2,6], [3,6], [4,6], [5,6], [6,6]]);
-p2.gb.initShip("Battleship", 4, [[7,0], [7,1], [7,2], [7,3]]);
-p2.gb.initShip("Destroyer", 3, [[0,0], [1,0], [2,0]]);
-p2.gb.initShip("Submarine", 3, [[7,9], [8,9], [9,9]]);
-p2.gb.initShip("Patrol Boat", 2, [[0,9], [1,9]]);
+function compInitShip(sName, length) {
+
+    let valid = true;
+    let coord = [];
+    let deltaPos;
+    let modArr = [[-1,0], [1,0], [0,1], [0,-1]];
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    coord.push([x,y]);
+    coord.push(findRandomCoordinate())
+    coord = populateRemainder(coord, length).sort();
+    for(let i = 0; i < coord.length; i++) {
+        for(let j = 0; j < p2.gb.shipArr.length; j++) {
+            for(let k = 0; k < p2.gb.shipArr[j].coordinates.length; k++) {
+                if(coord[i][0] == p2.gb.shipArr[j].coordinates[k][0] && coord[i][1] == p2.gb.shipArr[j].coordinates[k][1]) {
+                    valid = false;
+                }
+            }
+        }
+    }
+    if(valid) {
+        p2.gb.initShip(sName, length, coord);
+    } else {
+        compInitShip(sName, length);
+    }
+
+
+
+    function findRandomCoordinate() {
+
+        do {
+            deltaPos = Math.floor(Math.random() * 4);
+            x = coord[0][0] + modArr[deltaPos][0];
+            y = coord[0][1] + modArr[deltaPos][1];
+            // console.log(x, y)
+        } while(x < 0 || y < 0 || x > 9 || y > 9);
+
+        return [x,y];
+    }
+
+    function populateRemainder(array, max) {
+
+        let x;
+        let y;
+
+        while(array.length != max) {
+            if(array[0][0] == array[array.length-1][0]) {
+                // x values are the same, y values are changing
+                x = array[0][0];
+                if(array[0][1] < array[array.length-1][1]) {
+                    // y values are increasing
+                    if(array[array.length-1][1] + 1 == 10) {
+                        y = array[0][1] - 1;
+                    } else {
+                        y = array[array.length-1][1] + 1;
+                    }
+                } else {
+                    // y values are decreasing
+                    if(array[array.length-1][1] == 0) {
+                        y = array[0][1] + 1;
+                    } else {
+                        y = array[array.length-1][1] - 1;
+                    }
+                }
+            } else {
+                // y values are the same, x values are changing
+                y = array[0][1];
+                if(array[0][0] < array[array.length - 1][0]) {
+                    // x values are increasing
+                    if(array[array.length - 1][0] + 1 == 10) {
+                        x = array[0][0] - 1;
+                    } else {
+                        x = array[array.length - 1][0] + 1 
+                    }
+                } else {
+                    //x values are decreasing
+                    if(array[array.length-1][0]== 0) {
+                        x = array[0][0] + 1;
+                    } else {
+                        x = array[array.length-1][0] - 1
+                    }
+                }
+            }
+            array.push([x,y]);
+        }
+        return array;
+    }
+}
+
+
+
+// function selectComputerCoordinates() {
+//     let x;
+//     let y;
+//     let deltaPos;
+//     let modArr = [[-1,0], [1,0], [0,1], [0,-1]];
+//     let coord = [];
+    
+//     // Patrol Boat
+//     x = Math.floor(Math.random() * 10);
+//     y = Math.floor(Math.random() * 10);
+//     coord.push([x,y]);
+//     coord.push(findRandomCoordinate());
+//     p2.gb.initShip("Patrol Boat", 2, coord);
+
+//     // Submarine
+//     coord = [];
+//     x = Math.floor(Math.random() * 10);
+//     y = Math.floor(Math.random() * 10);
+//     coord.push([x,y]);
+//     coord.push(findRandomCoordinate())
+//     coord = populateRemainder(coord, 3).sort();
+//     p2.gb.initShip("Submarine", 3, coord);
+
+//     // Destroyer
+//     coord = [];
+
+
+// }
+
+function selectPlayerCoordinates() {
+
+    let message = document.getElementById('message');
+
+
+}
 
 function renderBoard(player, gb_id) {
 
@@ -78,7 +197,7 @@ function loadEvents() {
                     newImg.src = './fire.png';
                     grid.children[i].children[j].appendChild(newImg);
                     grid.children[i].children[j].style.background = colorArr[result[0]];
-                    message.textContent = `You hit your opponents ${result[1].name}`;
+                    message.textContent = `You hit your opponents ${result[1].name}!`;
                     grid.children[i].children[j].classList.add("hit");
                     if(p2.gb.isGameOver()) {
                         message.textContent = "Game Over - You won!"
@@ -110,10 +229,10 @@ function playComputerTurn() {
         while(true) {
             x = Math.floor(Math.random() * 10);
             y = Math.floor(Math.random() * 10);
-            console.log(`0. x = ${x}, y = ${y}`);
+            // console.log(`0. x = ${x}, y = ${y}`);
             // console.log(p2.gb.missArr);
             if((!(x in p2.gb.missArr)) || (x in p2.gb.missArr && !(p2.gb.missArr[x].has(y)))){
-                console.log(`1. x = ${x}, y = ${y}`);
+                // console.log(`1. x = ${x}, y = ${y}`);
                 result = p1.gb.receiveAttack(x, y);
                 newImg = new Image();
                 if(result == -1) {
@@ -155,7 +274,7 @@ function playComputerTurn() {
                 // continue the loop while the new value for x and y are either a) in the missArr, b) the same as the only value in the hitArr or c) out of bounds
                 while(!((!(x in p2.gb.missArr)) || (x in p2.gb.missArr && !(p2.gb.missArr[x].has(y)))) || (x == p2.hitObj[shipName][0][0] && y == p2.hitObj[shipName][0][1]) || x >= 10 || x <= -1|| y >= 10 || y <= -1);
 
-                console.log(`2. x = ${x}, y = ${y}`);
+                // console.log(`2. x = ${x}, y = ${y}`);
                 result = p1.gb.receiveAttack(x, y);
                 newImg = new Image();
                 if(result == -1) {
@@ -177,8 +296,8 @@ function playComputerTurn() {
                         result[1].hit();
                         // console.log(`hits after: ${result[1].hits}`);
                         if(result[1].isSunk()) {
-                            console.log(`a. hitObj before:`)
-                            console.log(p2.hitObj);
+                            // console.log(`a. hitObj before:`)
+                            // console.log(p2.hitObj);
                             for(let i = 0; i < result[1].coordinates.length; i++) {
                                 if(result[1].coordinates[i][0] in p2.gb.missArr) {
                                     p2.gb.missArr[result[1].coordinates[i][0]].add(result[1].coordinates[i][1]);
@@ -189,8 +308,8 @@ function playComputerTurn() {
                                 }
                             }
                             delete p2.hitObj[shipName];
-                            console.log(`a. hitObj after:`)
-                            console.log(p2.hitObj);
+                            // console.log(`a. hitObj after:`)
+                            // console.log(p2.hitObj);
                         } else {
                             p2.hitObj[shipName].push([x,y]);
                         }
@@ -207,7 +326,7 @@ function playComputerTurn() {
             } else {
                 // there are 2+ values for the 1 key. Need to find the direction to go in.                
                 if(p2.last == true) {
-                    console.log(p2.gb.missArr);
+                    // console.log(p2.gb.missArr);
                     // If p2.last = true, then the computer continues in the same direction its going.
                     if(p2.hitObj[shipName][0][0] == p2.hitObj[shipName][p2.hitObj[shipName].length-1][0]) {
                         // x values are the same, therefore y values change and the shipName is laid out horizontally
@@ -217,20 +336,20 @@ function playComputerTurn() {
                             if(p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] == 9 || (x in p2.gb.missArr && p2.gb.missArr[x].has(p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] + 1))) {
                                 //ship is horizontally placed up to the right side of the edge of grid OR [x,y] are coordinates we've already tried and missed. The rest of the ship is in the other direction.
                                 y = p2.hitObj[shipName][0][1] - 1;
-                                console.log(`3. x = ${x}, y = ${y}`);
+                                // console.log(`3. x = ${x}, y = ${y}`);
                             } else {
                                 y = p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] + 1;
-                                console.log(`4. x = ${x}, y = ${y}`);
+                                // console.log(`4. x = ${x}, y = ${y}`);
                             }
                         } else {
                             // y values are in decreasing order in the value array.
                             if(p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] == 0 || (x in p2.gb.missArr && p2.gb.missArr[x].has(p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] - 1))) {
                                 // ship is horizontally placed up to the edge of the left side of the grid. The rest of the ship is in the other direction
                                 y = p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] + 1;
-                                console.log(`5. x = ${x}, y = ${y}`);
+                                // console.log(`5. x = ${x}, y = ${y}`);
                             } else {
                                 y = p2.hitObj[shipName][p2.hitObj[shipName].length-1][1] - 1;
-                                console.log(`6. x = ${x}, y = ${y}`);
+                                // console.log(`6. x = ${x}, y = ${y}`);
                             }
                         }
 
@@ -242,17 +361,17 @@ function playComputerTurn() {
                             if(p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] == 9 || (p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] + 1 in p2.gb.missArr && p2.gb.missArr[p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] + 1].has(y))) {
                                 //ship is vertically placed up to the bottom side of the edge of grid. The rest of the ship is in the other direction
                                 x = p2.hitObj[shipName][0][0] - 1;
-                                console.log(`7. x = ${x}, y = ${y}`);
+                                // console.log(`7. x = ${x}, y = ${y}`);
                             } else {
                                 x = p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] + 1;
-                                console.log(`8. x = ${x}, y = ${y}`);
+                                // console.log(`8. x = ${x}, y = ${y}`);
                             }
                         } else {
                             // x values are in decreasing order in the value array
                             if(p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] == 0 || (p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] - 1 in p2.gb.missArr && p2.gb.missArr[p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] - 1].has(y))) {
                                 //ship is vertically placed up to the top side of the edge of grid. The rest of the ship is in the other direction
                                 x = p2.hitObj[shipName][0][0] + 1;
-                                console.log(`9. x = ${x}, y = ${y}`);
+                                // console.log(`9. x = ${x}, y = ${y}`);
                             } else {
                                 // console.log(`val is ${p2.hitObj[shipName][0][0]}`);
                                 x = p2.hitObj[shipName][p2.hitObj[shipName].length-1][0] - 1;
@@ -282,8 +401,8 @@ function playComputerTurn() {
                             result[1].hit();
                             // console.log(`hits after: ${result[1].hits}`);
                             if(result[1].isSunk()) {
-                                console.log(`b. hitObj before:`)
-                                console.log(p2.hitObj);
+                                // console.log(`b. hitObj before:`)
+                                // console.log(p2.hitObj);
                                 let a; 
                                 let b;
                                 for(let i = 0; i < result[1].coordinates.length; i++) {
@@ -299,8 +418,8 @@ function playComputerTurn() {
                                     }
                                 }
                                 delete p2.hitObj[shipName];
-                                console.log(`b. hitObj after:`)
-                                console.log(p2.hitObj);
+                                // console.log(`b. hitObj after:`)
+                                // console.log(p2.hitObj);
                             } else {
                                 p2.hitObj[shipName].push([x,y]);
                             }
@@ -359,8 +478,8 @@ function playComputerTurn() {
                             result[1].hit();
                             // console.log(`hits after: ${result[1].hits}`);
                             if(result[1].isSunk()) {
-                                console.log(`b. hitObj before:`)
-                                console.log(p2.hitObj);
+                                // console.log(`b. hitObj before:`)
+                                // console.log(p2.hitObj);
                                 let a; 
                                 let b;
                                 for(let i = 0; i < result[1].coordinates.length; i++) {
@@ -376,8 +495,8 @@ function playComputerTurn() {
                                     }
                                 }
                                 delete p2.hitObj[shipName];
-                                console.log(`b. hitObj after:`)
-                                console.log(p2.hitObj);
+                                // console.log(`b. hitObj after:`)
+                                // console.log(p2.hitObj);
                             } else {
                                 p2.hitObj[shipName].push([x,y]);
                             }
@@ -397,7 +516,7 @@ function playComputerTurn() {
         }
     }
 
-    console.log("Computer Turn Check")
+    // console.log("Computer Turn Check")
     if(p1.gb.isGameOver()) {
         document.getElementById('message').textContent = "Game Over - Computer Wins!";
         disableCells();
@@ -414,9 +533,13 @@ function disableCells() {
     }
 }
 
+if(startPlayer == 0) {
+    playComputerTurn();
+} 
 renderBoard(p1, 'your_gb');
-// renderBoard(p2, 'op_gb')
+renderBoard(p2, 'op_gb')
 loadEvents();
+// selectComputerCoordinates();
 // playComputerTurn()
 // playComputerTurn()
 // playComputerTurn()

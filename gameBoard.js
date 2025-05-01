@@ -24,7 +24,7 @@ export class GameBoard {
     }
 
     receiveAttack(x, y) {
-        console.log(`receiving x = ${x}, y = ${y}`);
+        // console.log(`receiving x = ${x}, y = ${y}`);
         // if(x in this.missArr && this.missArr[x].has(y)) {
         //     return -2;
         // }
@@ -52,7 +52,7 @@ export class GameBoard {
             sunkArr.push(this.shipArr[i].isSunk());
         }
 
-        console.log(sunkArr);
+        // console.log(sunkArr);
         
         return !sunkArr.includes(false)     // if true, false is not part of array and game is over, if false, false is part of array and the game continues
     }
