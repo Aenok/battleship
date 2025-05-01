@@ -24,10 +24,10 @@ export class GameBoard {
     }
 
     receiveAttack(x, y) {
-
-        if(x in this.missArr && this.missArr[x].has(y)) {
-            return -2;
-        }
+        console.log(`receiving x = ${x}, y = ${y}`);
+        // if(x in this.missArr && this.missArr[x].has(y)) {
+        //     return -2;
+        // }
 
         let hit_ship;
         for(let i = 0; i < this.shipArr.length; i++) {
@@ -42,16 +42,8 @@ export class GameBoard {
         if(hit_ship != undefined) {
             hit_ship.addHitCoordinates(x, y);
             return [this.shipArr.indexOf(hit_ship), hit_ship];
-        } else {
-            if(x in this.missArr) {
-                this.missArr[x].add(y);
-            } else {
-                let newSet = new Set();
-                newSet.add(y)
-                this.missArr[x] = newSet;
-            }
-            return -1;
-        }
+        } 
+        return -1;
     }
 
     isGameOver() {
@@ -59,6 +51,8 @@ export class GameBoard {
         for(let i = 0; i < this.shipArr.length; i++) {
             sunkArr.push(this.shipArr[i].isSunk());
         }
+
+        console.log(sunkArr);
         
         return !sunkArr.includes(false)     // if true, false is not part of array and game is over, if false, false is part of array and the game continues
     }

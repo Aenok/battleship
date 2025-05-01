@@ -16,17 +16,17 @@ p1.gb.initShip("Destroyer", 3, [[2,0], [3,0], [4,0]]);
 p1.gb.initShip("Submarine", 3, [[3,5], [3,6], [3,7]]);
 p1.gb.initShip("Patrol Boat", 2, [[9,0], [9,1]]);
 
-p2.gb.initShip("Cruiser", 5, [[5,3], [5,4], [5,5], [5,6], [5,7]]);
-p2.gb.initShip("Battleship", 4, [[0,2], [1,2], [2,2], [3,2]]);
-p2.gb.initShip("Destroyer", 3, [[2,0], [3,0], [4,0]]);
-p2.gb.initShip("Submarine", 3, [[3,5], [3,6], [3,7]]);
-p2.gb.initShip("Patrol Boat", 2, [[9,0], [9,1]]);
+// p2.gb.initShip("Cruiser", 5, [[5,3], [5,4], [5,5], [5,6], [5,7]]);
+// p2.gb.initShip("Battleship", 4, [[0,2], [1,2], [2,2], [3,2]]);
+// p2.gb.initShip("Destroyer", 3, [[2,0], [3,0], [4,0]]);
+// p2.gb.initShip("Submarine", 3, [[3,5], [3,6], [3,7]]);
+// p2.gb.initShip("Patrol Boat", 2, [[9,0], [9,1]]);
 
-// p2.gb.initShip(5, [[2,6], [3,6], [4,6], [5,6], [6,6]]);
-// p2.gb.initShip(4, [[7,0], [7,1], [7,2], [7,3]]);
-// p2.gb.initShip(3, [[0,0], [1,0], [2,0]], true);
-// p2.gb.initShip(3, [[7,9], [8,9], [9,9]]);
-// p2.gb.initShip(2, [[0,9], [1,9]]);
+p2.gb.initShip("Cruiser", 5, [[2,6], [3,6], [4,6], [5,6], [6,6]]);
+p2.gb.initShip("Battleship", 4, [[7,0], [7,1], [7,2], [7,3]]);
+p2.gb.initShip("Destroyer", 3, [[0,0], [1,0], [2,0]]);
+p2.gb.initShip("Submarine", 3, [[7,9], [8,9], [9,9]]);
+p2.gb.initShip("Patrol Boat", 2, [[0,9], [1,9]]);
 
 function renderBoard(player, gb_id) {
 
@@ -44,23 +44,49 @@ function renderBoard(player, gb_id) {
 
 }
 
-function loadCompGridCellEvents() {
+function loadEvents() {
+
     let grid = document.getElementById('op_gb').children[1];
-    // let message = document.getElementById('message');
+    let message = document.getElementById('message');
+    let pa = document.getElementById('pa');
+    let btn = pa.children[0];
+
+    btn.addEventListener('click', () => {
+        location.reload();
+    })
+
     for(let i = 0; i < grid.children.length; i++) {
         for(let j = 0; j < grid.children[i].children.length; j++) {
             grid.children[i].children[j].addEventListener('click', () => {
+                // console.log(p1.gb.missArr);
+                if(grid.children[i].children[j].children.length > 0 || grid.children[i].children[j].classList.contains("hit")) {
+                    message.textContent = "Choice already attempted. Choose another coordinate"
+                    return;
+                }
                 let result = p2.gb.receiveAttack(i,j);
-                if(result == -2) {
-
-                } else if(result == -1) {
+                
+                if(result == -1) {
+                    // coordinates were a miss. Update grid and p1's missArr
                     let newImg = new Image();
                     newImg.src = './close.png';
                     grid.children[i].children[j].appendChild(newImg)
-                    // message.textContent = "Miss!"
+                    message.textContent = "Miss!"
+                    playComputerTurn();
                 } else {
+                    result[1].hit();
+                    let newImg = new Image();
+                    newImg.src = './fire.png';
+                    grid.children[i].children[j].appendChild(newImg);
                     grid.children[i].children[j].style.background = colorArr[result[0]];
-                    // message.textContent = "Hit!"
+                    message.textContent = `You hit your opponents ${result[1].name}`;
+                    grid.children[i].children[j].classList.add("hit");
+                    if(p2.gb.isGameOver()) {
+                        message.textContent = "Game Over - You won!"
+                        disableCells();
+                        pa.style.display = 'block';
+                    } else {
+                        playComputerTurn();
+                    }
 
                 }
             })
@@ -122,31 +148,9 @@ function playComputerTurn() {
             if(p2.hitObj[shipName].length == 1) {
                 // computer hit once - i.e there is only 1 value for the 1 key- and doesnt know the correct direction. choose randomly, checking against missed coordinates.
                 do {
-
-
                     let deltaPos = Math.floor(Math.random() * 4);
                     x = p2.hitObj[shipName][0][0] + modArr[deltaPos][0];
                     y = p2.hitObj[shipName][0][1] + modArr[deltaPos][1];
-
-                    // delta and op variables add randomness to the selection
-                    // let deltaX = Math.floor(Math.random() * 2);
-                    // let xOp = Boolean(Math.floor(Math.random() * 2));
-                    // let deltaY = Math.floor(Math.random() * 2);
-                    // let yOp = Boolean(Math.floor(Math.random() * 2));
-    
-                    // // console.log(p2.hitObj[shipName][0][0]);
-    
-                    // if(xOp) {
-                    //     x = p2.hitObj[shipName][0][0] + deltaX;
-                    // } else {
-                    //     x = p2.hitObj[shipName][0][0] - deltaX;
-                    // }
-    
-                    // if(yOp) {
-                    //     y = p2.hitObj[shipName][0][1] + deltaY;
-                    // } else {
-                    //     y = p2.hitObj[shipName][0][1] - deltaY;
-                    // }
                 }
                 // continue the loop while the new value for x and y are either a) in the missArr, b) the same as the only value in the hitArr or c) out of bounds
                 while(!((!(x in p2.gb.missArr)) || (x in p2.gb.missArr && !(p2.gb.missArr[x].has(y)))) || (x == p2.hitObj[shipName][0][0] && y == p2.hitObj[shipName][0][1]) || x >= 10 || x <= -1|| y >= 10 || y <= -1);
@@ -203,6 +207,7 @@ function playComputerTurn() {
             } else {
                 // there are 2+ values for the 1 key. Need to find the direction to go in.                
                 if(p2.last == true) {
+                    console.log(p2.gb.missArr);
                     // If p2.last = true, then the computer continues in the same direction its going.
                     if(p2.hitObj[shipName][0][0] == p2.hitObj[shipName][p2.hitObj[shipName].length-1][0]) {
                         // x values are the same, therefore y values change and the shipName is laid out horizontally
@@ -391,51 +396,67 @@ function playComputerTurn() {
 
         }
     }
+
+    console.log("Computer Turn Check")
+    if(p1.gb.isGameOver()) {
+        document.getElementById('message').textContent = "Game Over - Computer Wins!";
+        disableCells();
+    }
+}
+
+function disableCells() {
+    let grid = document.getElementById("op_gb").children[1];
+
+    for(let i = 0; i < grid.children.length; i++) {
+        for(let j = 0; j < grid.children[i].children.length; j++) {
+            grid.children[i].children[j].classList.add("disabled");
+        }
+    }
 }
 
 renderBoard(p1, 'your_gb');
 // renderBoard(p2, 'op_gb')
-loadCompGridCellEvents();
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
-playComputerTurn()
+loadEvents();
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
+// playComputerTurn()
 
 
 
