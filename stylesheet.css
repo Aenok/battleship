@@ -114,3 +114,7 @@ body {
 #pa {
     display: none;
 }
+
+.highlight, .established {
+    background-color: #4aa6bd;
+}
