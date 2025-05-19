@@ -111,23 +111,23 @@ async function selectPlayerCoordinates() {
 
     let message = document.getElementById('message');
     
-    message.textContent = "Click and drag the location for your Cruiser (5)";
+    message.textContent = "Click and drag the location for your Cruiser - 5 spaces";
     let cruiser = await waitForDrag(5);
     p1.gb.initShip("Cruiser", 5, cruiser);
 
-    message.textContent = "Click and drag the location of your Battleship (4)"
+    message.textContent = "Click and drag the location for your Battleship - 4 spaces"
     let battleship = await waitForDrag(4);
     p1.gb.initShip("Battleship", 4, battleship);
 
-    message.textContent = "Click and drag the location of your Destroyer (3)"
+    message.textContent = "Click and drag the location for your Destroyer - 3 spaces"
     let destroyer = await waitForDrag(3);
     p1.gb.initShip("Destroyer", 3, destroyer);
 
-    message.textContent = "Click and drag the location of your Submarine (3)"
+    message.textContent = "Click and drag the location for your Submarine - 3 spaces"
     let submarine = await waitForDrag(3);
     p1.gb.initShip("Submarine", 3, submarine);
 
-    message.textContent = "Click and drag the location of your Patrol Boat (2)"
+    message.textContent = "Click and drag the location for your Patrol Boat - 2 spaces"
     let patrolBoat = await waitForDrag(2);
     p1.gb.initShip("Patrol Boat", 2, patrolBoat);
 
